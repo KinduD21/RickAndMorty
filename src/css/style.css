@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.section {
+    color: rgb(245, 245, 245);
+}
+
+article {
+    width: 600px;
+    height: 220px;
+}
+
+img {
+    height: 100%;
+}
