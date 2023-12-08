@@ -1,3 +1,7 @@
 const test = await fetch('https://rickandmortyapi.com/api/character');
-const result = await test.json();
-console.log(result);
+const response = await test.json();
+console.log(response.results);
+
+const characterCards = document.querySelectorAll("#characterCard");
+console.log(characterCards);
+
