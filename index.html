@@ -20,7 +20,7 @@
         <a href="" class="hover:text-orange-400"><li>About</li></a>
         <a href=""
           ><li
-            class="uppercase border-solid border-2 border-yellow-400 rounded-lg px-3 py-2 text-base"
+            class="uppercase border-solid border-2 border-yellow-400 rounded-lg px-3 py-2 text-base hover:bg-orange-500 hover:text-white hover:border-transparent"
           >
             Support us
           </li></a
@@ -32,114 +32,97 @@
       <section class="flex justify-center text-8xl font-extrabold m-6 p-4">
         The Rick and Morty
       </section>
-      <section id="cardWrapper" class="bg-gray-900 flex flex-wrap justify-center py-20">
-        <!-- <article id="characterCard" class="flex bg-gray-800 m-4 rounded-lg">
-          <div class="flex flex-initial basis-56">
-            <img src="" alt="" class="rounded-l-lg" />
-          </div>
-          <div
-            class="flex flex-1 flex-col gap-3 justify-between p-3"
-          >
-            <div id="cardName" class="section flex flex-col gap-2">
-              <a href="" target="_blank" class="text-3xl font-bold block hover:text-orange-400"
-                ><h2></h2
-              ></a>
-              <div class="flex items-baseline gap-1">
-                <span id="cardStatusIcon" class="h-2 w-2 mr-1 rounded"></span>
-                <span id="cardStatus"></span>
-              </div>
-            </div>
-            <div id="cardLocation" class="section flex-col flex-wrap">
-              <span class="text-gray-400">Last known location:</span
-              ><a href="" target="_blank" class="text-xl block"></a>
-            </div>
-            <div id="cardFirstSeen" class="section flex-col flex-wrap">
-              <span class="text-gray-400">First seen in:</span
-              ><a href="" target="_blank" class="text-xl block"></a>
-            </div>
-          </div>
-        </article>
-        <article id="characterCard" class="flex bg-gray-800 m-4 rounded-lg">
-          <div class="flex flex-initial basis-56">
-            <img src="" alt="" class="rounded-l-lg" />
-          </div>
-          <div
-            class="flex flex-1 flex-col gap-3 justify-between p-3"
-          >
-            <div id="cardName" class="section flex flex-col gap-2">
-              <a href="" target="_blank" class="text-3xl font-bold block hover:text-orange-400"
-                ><h2></h2
-              ></a>
-              <div class="flex items-baseline gap-1">
-                <span id="cardStatusIcon" class="h-2 w-2 mr-1 rounded"></span>
-                <span id="cardStatus"></span>
-              </div>
-            </div>
-            <div id="cardLocation" class="section flex-col flex-wrap">
-              <span class="text-gray-400">Last known location:</span
-              ><a href="" target="_blank" class="text-xl block"></a>
-            </div>
-            <div id="cardFirstSeen" class="section flex-col flex-wrap">
-              <span class="text-gray-400">First seen in:</span
-              ><a href="" target="_blank" class="text-xl block"></a>
-            </div>
-          </div>
-        </article>
-        <article id="characterCard" class="flex bg-gray-800 m-4 rounded-lg">
-          <div class="flex flex-initial basis-56">
-            <img src="" alt="" class="rounded-l-lg" />
-          </div>
-          <div
-            class="flex flex-1 flex-col gap-3 justify-between p-3"
-          >
-            <div id="cardName" class="section flex flex-col gap-2">
-              <a href="" target="_blank" class="text-3xl font-bold block hover:text-orange-400"
-                ><h2></h2
-              ></a>
-              <div class="flex items-baseline gap-1">
-                <span id="cardStatusIcon" class="h-2 w-2 mr-1 rounded"></span>
-                <span id="cardStatus"></span>
-              </div>
-            </div>
-            <div id="cardLocation" class="section flex-col flex-wrap">
-              <span class="text-gray-400">Last known location:</span
-              ><a href="" target="_blank" class="text-xl block"></a>
-            </div>
-            <div id="cardFirstSeen" class="section flex-col flex-wrap">
-              <span class="text-gray-400">First seen in:</span
-              ><a href="" target="_blank" class="text-xl block"></a>
-            </div>
-          </div>
-        </article>
-        <article id="characterCard" class="flex bg-gray-800 m-4 rounded-lg">
-          <div class="flex flex-initial basis-56">
-            <img src="" alt="" class="rounded-l-lg" />
-          </div>
-          <div
-            class="flex flex-1 flex-col gap-3 justify-between p-3"
-          >
-            <div id="cardName" class="section flex flex-col gap-2">
-              <a href="" target="_blank" class="text-3xl font-bold block hover:text-orange-400"
-                ><h2></h2
-              ></a>
-              <div class="flex items-baseline gap-1">
-                <span id="cardStatusIcon" class="h-2 w-2 mr-1 rounded"></span>
-                <span id="cardStatus"></span>
-              </div>
-            </div>
-            <div id="cardLocation" class="section flex-col flex-wrap">
-              <span class="text-gray-400">Last known location:</span
-              ><a href="" target="_blank" class="text-xl block"></a>
-            </div>
-            <div id="cardFirstSeen" class="section flex-col flex-wrap">
-              <span class="text-gray-400">First seen in:</span
-              ><a href="" target="_blank" class="text-xl block"></a>
-            </div>
-          </div>
-        </article> -->
-      </section>
+      <section
+        id="cardWrapper"
+        class="bg-gray-900 flex flex-wrap justify-center py-20"
+      ></section>
+      <nav class="bg-gray-900 pb-10">
+        <ul class="flex justify-center items-center -space-x-px h-8 text-sm">
+          <li>
+            <a
+              href="#"
+              class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+            >
+              <span class="sr-only">Previous</span>
+              <svg
+                class="w-2.5 h-2.5 rtl:rotate-180"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 6 10"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 1 1 5l4 4"
+                />
+              </svg>
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+              >1</a
+            >
+          </li>
+          <li>
+            <a
+              href="#"
+              class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+              >2</a
+            >
+          </li>
+          <li>
+            <a
+              href="#"
+              aria-current="page"
+              class="z-10 flex items-center justify-center px-3 h-8 leading-tight text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
+              >3</a
+            >
+          </li>
+          <li>
+            <a
+              href="#"
+              class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+              >4</a
+            >
+          </li>
+          <li>
+            <a
+              href="#"
+              class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+              >5</a
+            >
+          </li>
+          <li>
+            <a
+              href="#"
+              class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+            >
+              <span class="sr-only">Next</span>
+              <svg
+                class="w-2.5 h-2.5 rtl:rotate-180"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 6 10"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="m1 9 4-4-4-4"
+                />
+              </svg>
+            </a>
+          </li>
+        </ul>
+      </nav>
     </main>
-    <footer></footer>
     <script src="/src/js/index.js" type="module"></script>
   </body>
 </html>

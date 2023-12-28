@@ -1,8 +1,5 @@
-// console.log(episodesArray);
-
 let allCharacters = [];
 let allEpisodes = [];
-const cardWrapper = document.querySelector("#cardWrapper");
 
 const getAllCharacters = async () => {
   let nextPage = "https://rickandmortyapi.com/api/character";
@@ -50,7 +47,7 @@ const fillCards = async (data) => {
   }
 };
 
-await fillCards(10);
+await fillCards(6);
 
 function createCardTemplate(character, firstEpisode) {
   const template = `<article id="characterCard" class="flex bg-gray-800 m-4 rounded-lg">
@@ -103,5 +100,6 @@ function createCardTemplate(character, firstEpisode) {
 }
 
 function renderCards(cardTemplate) {
+  const cardWrapper = document.querySelector("#cardWrapper");
   cardWrapper.insertAdjacentHTML("beforeend", cardTemplate);
 }
