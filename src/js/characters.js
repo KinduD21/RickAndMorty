@@ -42,7 +42,7 @@ const fillCards = async (data) => {
     const firstEpisode = allEpisodes.find(
       (episode) => episode.id === +firstEpisodeId
     );
-    
+
     createCardTemplate(character, firstEpisode);
   }
 };
@@ -103,3 +103,5 @@ function renderCards(cardTemplate) {
   const cardWrapper = document.querySelector("#cardWrapper");
   cardWrapper.insertAdjacentHTML("beforeend", cardTemplate);
 }
+
+export { allCharacters };
