@@ -1,6 +1,8 @@
 let allCharacters = [];
 let allEpisodes = [];
 
+const cardWrapper = document.querySelector("#cardWrapper");
+
 const getAllCharacters = async () => {
   let nextPage = "https://rickandmortyapi.com/api/character";
 
@@ -32,12 +34,20 @@ const getAllEpisodes = async () => {
 await getAllCharacters();
 await getAllEpisodes();
 
-const fillCards = async (data) => {
-  for (let i = 0; i < data; i++) {
-    let id = Math.floor(Math.random() * allCharacters.length);
+const fillCards = async (charactersArray) => {
+  const selectedIndices = new Set();
 
-    const character = allCharacters[id];
+  for (let i = 0; i < charactersArray.length; i++) {
+    let id;
 
+    // Ensure unique character selection
+    do {
+      id = Math.floor(Math.random() * charactersArray.length);
+    } while (selectedIndices.has(id));
+
+    selectedIndices.add(id);
+
+    const character = charactersArray[id];
     const firstEpisodeId = character.episode[0].split("/").pop();
     const firstEpisode = allEpisodes.find(
       (episode) => episode.id === +firstEpisodeId
@@ -46,8 +56,6 @@ const fillCards = async (data) => {
     createCardTemplate(character, firstEpisode);
   }
 };
-
-await fillCards(6);
 
 function createCardTemplate(character, firstEpisode) {
   const template = `<article id="characterCard" class="flex bg-gray-800 m-4 rounded-lg">
@@ -100,8 +108,7 @@ function createCardTemplate(character, firstEpisode) {
 }
 
 function renderCards(cardTemplate) {
-  const cardWrapper = document.querySelector("#cardWrapper");
   cardWrapper.insertAdjacentHTML("beforeend", cardTemplate);
 }
 
-export { allCharacters };
+export { allCharacters, fillCards, cardWrapper };
