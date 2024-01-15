@@ -9,3 +9,8 @@
 article {
     width: 600px;
 }
+
+#paginationWrapper li a.selected {
+    background-color: rgb(55 65 81);
+    color: rgb(255 255 255);
+}
