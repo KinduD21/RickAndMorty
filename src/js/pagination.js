@@ -1,4 +1,4 @@
-import { allCharacters, fillCards, cardWrapper } from "./characters";
+import { formattedCharactersArray, fillCards, cardWrapper } from "./characters";
 
 const paginationWrapper = document.querySelector("#paginationWrapper");
 const pageBtns = paginationWrapper
@@ -6,37 +6,14 @@ const pageBtns = paginationWrapper
   .querySelectorAll("li a.numeric-page");
 const prevBtn = paginationWrapper.querySelector("#previousBtn");
 const nextBtn = paginationWrapper.querySelector("#nextBtn");
+const lastBtnsArray = [prevBtn, nextBtn];
 
-const shuffleArray = (array) => {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
-};
+// Attach event listeners to "Previous" and "Next" buttons
+lastBtnsArray.forEach((button) => {
+  button.addEventListener("click", switchPage);
+});
 
-const formatCharactersArray = (characters) => {
-  const shuffledCharacters = shuffleArray(characters);
-  const formattedArray = [];
-
-  for (let i = 0; i < 30; i += 6) {
-    const chunk = shuffledCharacters.slice(i, i + 6);
-    const formattedObject = {
-      id: formattedArray.length + 1,
-      selected: false,
-      characters: chunk,
-    };
-    formattedArray.push(formattedObject);
-  }
-
-  return formattedArray;
-};
-
-const formattedCharactersArray = formatCharactersArray(allCharacters);
-formattedCharactersArray[0].selected = true;
-
-await fillCards(formattedCharactersArray[0].characters);
-
+// First page must be selected by default onload
 pageBtns[0].classList.add("selected");
 
 pageBtns.forEach((pageBtn, index) => {
@@ -48,37 +25,59 @@ pageBtns.forEach((pageBtn, index) => {
     event.preventDefault();
     cardWrapper.innerHTML = "";
 
-    pageBtns.forEach((pageBtn) => pageBtn.classList.remove("selected"));
     formattedCharactersArray.forEach((obj) => (obj.selected = false));
-    formattedCharactersArray[index].selected = true;
-    console.log(formattedCharactersArray);
+    pageBtns.forEach((pageBtn) => pageBtn.classList.remove("selected"));
 
+    formattedCharactersArray[index].selected = true;
     pageBtn.classList.add("selected");
+
     await fillCards(formattedCharactersArray[index].characters);
   });
 });
 
-prevBtn.addEventListener("click", async (event) => {
+async function switchPage(event) {
   event.preventDefault();
-  if (formattedCharactersArray[0].selected === true) return;
+
+  // Check whether now first/last page is selected and which of next/prev button is clicked
+  if (
+    formattedCharactersArray[0].selected === true &&
+    event.target.closest("a").id === "previousBtn"
+  )
+    return;
+  if (
+    formattedCharactersArray[formattedCharactersArray.length - 1].selected ===
+      true &&
+    event.target.closest("a").id === "nextBtn"
+  ) {
+    return;
+  }
+
+  // Switch page functionality
   else {
     cardWrapper.innerHTML = "";
 
     let selectedId;
     pageBtns.forEach((pageBtn) => {
       if (pageBtn.classList.contains("selected")) {
-        selectedId = pageBtn.id;
+        selectedId = Number(pageBtn.id);
       }
     });
 
     formattedCharactersArray[selectedId - 1].selected = false;
     pageBtns.forEach((pageBtn) => pageBtn.classList.remove("selected"));
-    console.log(
-      pageBtns.forEach((pageBtn) =>
-        pageBtn.querySelector(`#${formattedCharactersArray[selectedId - 2].id}`)
-      )
+
+    if (event.target.id === "previousBtn") {
+      selectedId = selectedId - 1;
+    } else {
+      selectedId = selectedId + 1;
+    }
+
+    formattedCharactersArray[selectedId - 1].selected = true;
+    const selectedCard = Array.from(pageBtns).find(
+      (pageBtn) => Number(pageBtn.id) === selectedId
     );
-    await fillCards(formattedCharactersArray[selectedId - 2].characters);
-    console.log(formattedCharactersArray[selectedId - 2]);
+    selectedCard.classList.add("selected");
+
+    await fillCards(formattedCharactersArray[selectedId - 1].characters);
   }
-});
+}

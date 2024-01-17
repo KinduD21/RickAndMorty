@@ -34,6 +34,35 @@ const getAllEpisodes = async () => {
 await getAllCharacters();
 await getAllEpisodes();
 
+const shuffleArray = (array) => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+};
+
+const formatCharactersArray = (characters) => {
+  const shuffledCharacters = shuffleArray(characters);
+  const formattedArray = [];
+
+  for (let i = 0; i < 30; i += 6) {
+    const chunk = shuffledCharacters.slice(i, i + 6);
+    const formattedObject = {
+      id: formattedArray.length + 1,
+      selected: false,
+      characters: chunk,
+    };
+    formattedArray.push(formattedObject);
+  }
+
+  return formattedArray;
+};
+
+const formattedCharactersArray = formatCharactersArray(allCharacters);
+// First page of characters in array must be selected by default onload
+formattedCharactersArray[0].selected = true;
+
 const fillCards = async (charactersArray) => {
   const selectedIndices = new Set();
 
@@ -56,6 +85,8 @@ const fillCards = async (charactersArray) => {
     createCardTemplate(character, firstEpisode);
   }
 };
+
+await fillCards(formattedCharactersArray[0].characters);
 
 function createCardTemplate(character, firstEpisode) {
   const template = `<article id="characterCard" class="flex bg-gray-800 m-4 rounded-lg">
@@ -111,4 +142,4 @@ function renderCards(cardTemplate) {
   cardWrapper.insertAdjacentHTML("beforeend", cardTemplate);
 }
 
-export { allCharacters, fillCards, cardWrapper };
+export { formattedCharactersArray, fillCards, cardWrapper };
