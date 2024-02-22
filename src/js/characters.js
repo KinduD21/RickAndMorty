@@ -1,24 +1,18 @@
-let allCharacters = [];
-let allEpisodes = [];
+import { createPaginationTemplate } from "./pagination";
 
 const cardWrapper = document.querySelector("#cardWrapper");
 
-const getAllCharacters = async () => {
-  let nextPage = "https://rickandmortyapi.com/api/character";
-
-  while (nextPage) {
-    const response = await fetch(nextPage);
-    const data = await response.json();
-
-    allCharacters = allCharacters.concat(data.results);
-    nextPage = data.info.next;
-  }
-
-  return allCharacters;
+const getCharacters = async (url) => {
+  let charactersRequest = await fetch(
+    url,
+  );
+  let data = await charactersRequest.json();
+  return data.results;
 };
 
 const getAllEpisodes = async () => {
   let nextPage = "https://rickandmortyapi.com/api/episode";
+  let allEpisodes = [];
 
   while (nextPage) {
     const response = await fetch(nextPage);
@@ -31,8 +25,11 @@ const getAllEpisodes = async () => {
   return allEpisodes;
 };
 
-await getAllCharacters();
-await getAllEpisodes();
+let charactersArray = await getCharacters("https://rickandmortyapi.com/api/character?page=1");
+let episodesArray = await getAllEpisodes();
+let data = await getCharacters("https://rickandmortyapi.com/api/character?page=1");
+console.log(data);
+createPaginationTemplate(data.info.pages);
 
 const shuffleArray = (array) => {
   for (let i = array.length - 1; i > 0; i--) {
@@ -42,58 +39,31 @@ const shuffleArray = (array) => {
   return array;
 };
 
-const formatCharactersArray = (characters) => {
-  const shuffledCharacters = shuffleArray(characters);
-  const formattedArray = [];
-
-  for (let i = 0; i < 30; i += 6) {
-    const chunk = shuffledCharacters.slice(i, i + 6);
-    const formattedObject = {
-      id: formattedArray.length + 1,
-      selected: false,
-      characters: chunk,
-    };
-    formattedArray.push(formattedObject);
-  }
-
-  return formattedArray;
-};
-
-const formattedCharactersArray = formatCharactersArray(allCharacters);
 // First page of characters in array must be selected by default onload
-formattedCharactersArray[0].selected = true;
+// formattedCharactersArray[0].selected = true;
 
 const fillCards = async (charactersArray) => {
-  const selectedIndices = new Set();
-
   for (let i = 0; i < charactersArray.length; i++) {
-    let id;
-
-    // Ensure unique character selection
-    do {
-      id = Math.floor(Math.random() * charactersArray.length);
-    } while (selectedIndices.has(id));
-
-    selectedIndices.add(id);
-
-    const character = charactersArray[id];
+    const character = charactersArray[i];
     const firstEpisodeId = character.episode[0].split("/").pop();
-    const firstEpisode = allEpisodes.find(
-      (episode) => episode.id === +firstEpisodeId
+    const firstEpisode = episodesArray.find(
+      (episode) => episode.id === +firstEpisodeId,
     );
+    if (!firstEpisode) {
+    }
 
     createCardTemplate(character, firstEpisode);
   }
 };
 
-await fillCards(formattedCharactersArray[0].characters);
+await fillCards(shuffleArray(charactersArray));
 
-function createCardTemplate(character, firstEpisode) {
+async function createCardTemplate(character, firstEpisode) {
   const template = `<article id="characterCard" class="flex bg-gray-800 m-4 rounded-lg">
   <div class="flex flex-initial basis-56">
     <img src="${character.image}" alt="${
-    character.name
-  }" class="rounded-l-lg" />
+      character.name
+    }" class="rounded-l-lg" />
   </div>
   <div
     class="flex flex-1 flex-col gap-3 justify-between p-3"
@@ -109,10 +79,10 @@ function createCardTemplate(character, firstEpisode) {
         character.status === "Alive"
           ? "bg-green-600"
           : character.status === "Dead"
-          ? "bg-red-600"
-          : character.status === "unknown"
-          ? "bg-neutral-400"
-          : ""
+            ? "bg-red-600"
+            : character.status === "unknown"
+              ? "bg-neutral-400"
+              : ""
       }"></span>
         <span id="cardStatus">${character.status} - ${character.species}</span>
       </div>
@@ -122,16 +92,16 @@ function createCardTemplate(character, firstEpisode) {
       ><a href="${
         character.location.url
       }" target="_blank" class="text-xl block hover:text-orange-400">${
-    character.location.name
-  }</a>
+        character.location.name
+      }</a>
     </div>
     <div id="cardFirstSeen" class="section flex-col flex-wrap">
       <span class="text-gray-400">First seen in:</span
       ><a href="${
         firstEpisode.url
       }" target="_blank" class="text-xl block hover:text-orange-400">${
-    firstEpisode.name
-  }</a>
+        firstEpisode.name
+      }</a>
     </div>
   </div>
 </article>`;
@@ -142,4 +112,4 @@ function renderCards(cardTemplate) {
   cardWrapper.insertAdjacentHTML("beforeend", cardTemplate);
 }
 
-export { formattedCharactersArray, fillCards, cardWrapper };
+export { charactersArray, fillCards, cardWrapper, getCharacters };
