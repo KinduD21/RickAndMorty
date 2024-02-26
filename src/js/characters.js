@@ -1,16 +1,23 @@
 import { createPaginationTemplate } from "./pagination";
 
 const cardWrapper = document.querySelector("#cardWrapper");
+let pagesPassed = false;
 
-const getCharacters = async (url) => {
-  let charactersRequest = await fetch(
-    url,
-  );
+let charactersArray = await getCharacters(
+  "https://rickandmortyapi.com/api/character?page=1",
+);
+
+async function getCharacters(url) {
+  let charactersRequest = await fetch(url);
   let data = await charactersRequest.json();
-  return data.results;
-};
+  if (pagesPassed === false) {
+    pagesPassed = true;
+    createPaginationTemplate(data.info.pages);
+  }
+  await fillCards(shuffleArray(data.results));
+}
 
-const getAllEpisodes = async () => {
+async function getAllEpisodes() {
   let nextPage = "https://rickandmortyapi.com/api/episode";
   let allEpisodes = [];
 
@@ -23,38 +30,31 @@ const getAllEpisodes = async () => {
   }
 
   return allEpisodes;
-};
+}
 
-let charactersArray = await getCharacters("https://rickandmortyapi.com/api/character?page=1");
-let episodesArray = await getAllEpisodes();
-let data = await getCharacters("https://rickandmortyapi.com/api/character?page=1");
-console.log(data);
-createPaginationTemplate(data.info.pages);
-
-const shuffleArray = (array) => {
+function shuffleArray(array) {
+  console.log(array);
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [array[i], array[j]] = [array[j], array[i]];
   }
   return array;
-};
+}
 
 // First page of characters in array must be selected by default onload
 // formattedCharactersArray[0].selected = true;
 
-const fillCards = async (charactersArray) => {
+async function fillCards(charactersArray) {
+  let episodesArray = await getAllEpisodes();
   for (let i = 0; i < charactersArray.length; i++) {
     const character = charactersArray[i];
     const firstEpisodeId = character.episode[0].split("/").pop();
     const firstEpisode = episodesArray.find(
       (episode) => episode.id === +firstEpisodeId,
     );
-    if (!firstEpisode) {
-    }
-
     createCardTemplate(character, firstEpisode);
   }
-};
+}
 
 await fillCards(shuffleArray(charactersArray));
 

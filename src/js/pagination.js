@@ -71,7 +71,7 @@ function renderPagination(template) {
   ul.insertAdjacentHTML("beforeend", template);
 }
 
-function switchPage(event) {
+async function switchPage(event) {
   event.preventDefault();
 
   let selectedElement = findSelectedElement(pageBtns);
@@ -104,7 +104,7 @@ function switchPage(event) {
     selectedElement = findElementById(pageBtns, selectedId);
     selectedElement.classList.add("selected");
 
-    getCharacters(
+    await getCharacters(
       `https://rickandmortyapi.com/api/character?page=${selectedId}`,
     );
   }
