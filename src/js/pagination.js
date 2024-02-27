@@ -8,19 +8,68 @@ let prevBtn;
 let nextBtn;
 let lastBtnsArray;
 
+// function createPaginationTemplate(totalPages) {
+//   renderPagination(prevBtnTemplate);
+//   for (let i = 0; i < totalPages; i++) {
+//     let pageNumber = i + 1;
+//     const template = `<li>
+//     <a
+//       href="#"
+//       id="${pageNumber}"
+//       class="numeric-page flex h-8 items-center justify-center border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+//     >${pageNumber}</a>
+//   </li>`;
+//     renderPagination(template);
+//   }
+//   renderPagination(nextBtnTemplate);
+
+//   pageBtns = paginationWrapper.querySelectorAll("ul li a.numeric-page");
+//   prevBtn = paginationWrapper.querySelector("#previousBtn");
+//   nextBtn = paginationWrapper.querySelector("#nextBtn");
+//   lastBtnsArray = [prevBtn, nextBtn];
+
+//   btnsUpdateFunction();
+// }
+
 function createPaginationTemplate(totalPages) {
   renderPagination(prevBtnTemplate);
+
+  const maxVisiblePages = 8; // Maximum number of visible page numbers
+  const visiblePagesBeforeEllipsis = 5; // Number of visible pages before ellipsis
+  const visiblePagesAfterEllipsis = 2; // Number of visible pages after ellipsis
+
+  let currentPage = 1;
+
   for (let i = 0; i < totalPages; i++) {
     let pageNumber = i + 1;
-    const template = `<li>
-    <a
-      href="#"
-      id="${pageNumber}"
-      class="numeric-page flex h-8 items-center justify-center border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-    >${pageNumber}</a>
-  </li>`;
-    renderPagination(template);
+
+    if (
+      pageNumber <= visiblePagesBeforeEllipsis || // Always show first few pages
+      pageNumber >= totalPages - visiblePagesAfterEllipsis || // Always show last few pages
+      (pageNumber >= currentPage - Math.floor(maxVisiblePages / 2) &&
+        pageNumber <= currentPage + Math.floor(maxVisiblePages / 2)) // Show pages around the current page
+    ) {
+      const template = `<li>
+        <a
+          href="#"
+          id="${pageNumber}"
+          class="numeric-page flex h-8 items-center justify-center border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+        >${pageNumber}</a>
+      </li>`;
+      renderPagination(template);
+    } else if (
+      pageNumber ===
+      currentPage + Math.floor(maxVisiblePages / 2) + 1
+    ) {
+      renderPagination(`<li>
+      <a
+        href="#"
+        class="ellipsis flex h-8 items-center justify-center border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+      >...</a>
+    </li>`);
+    }
   }
+
   renderPagination(nextBtnTemplate);
 
   pageBtns = paginationWrapper.querySelectorAll("ul li a.numeric-page");
