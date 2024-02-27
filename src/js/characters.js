@@ -2,17 +2,17 @@ import { createPaginationTemplate } from "./pagination";
 
 const cardWrapper = document.querySelector("#cardWrapper");
 let pagesPassed = false;
+let episodesArray = [];
 
-let charactersArray = await getCharacters(
-  "https://rickandmortyapi.com/api/character?page=1",
-);
+await getCharacters("https://rickandmortyapi.com/api/character?page=1");
 
 async function getCharacters(url) {
   let charactersRequest = await fetch(url);
   let data = await charactersRequest.json();
-  if (pagesPassed === false) {
+  if (pagesPassed === false && !episodesArray.length) {
     pagesPassed = true;
     createPaginationTemplate(data.info.pages);
+    episodesArray = await getAllEpisodes();
   }
   await fillCards(shuffleArray(data.results));
 }
@@ -33,7 +33,6 @@ async function getAllEpisodes() {
 }
 
 function shuffleArray(array) {
-  console.log(array);
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [array[i], array[j]] = [array[j], array[i]];
@@ -41,11 +40,7 @@ function shuffleArray(array) {
   return array;
 }
 
-// First page of characters in array must be selected by default onload
-// formattedCharactersArray[0].selected = true;
-
 async function fillCards(charactersArray) {
-  let episodesArray = await getAllEpisodes();
   for (let i = 0; i < charactersArray.length; i++) {
     const character = charactersArray[i];
     const firstEpisodeId = character.episode[0].split("/").pop();
@@ -55,8 +50,6 @@ async function fillCards(charactersArray) {
     createCardTemplate(character, firstEpisode);
   }
 }
-
-await fillCards(shuffleArray(charactersArray));
 
 async function createCardTemplate(character, firstEpisode) {
   const template = `<article id="characterCard" class="flex bg-gray-800 m-4 rounded-lg">
@@ -112,4 +105,4 @@ function renderCards(cardTemplate) {
   cardWrapper.insertAdjacentHTML("beforeend", cardTemplate);
 }
 
-export { charactersArray, fillCards, cardWrapper, getCharacters };
+export { cardWrapper, getCharacters };
