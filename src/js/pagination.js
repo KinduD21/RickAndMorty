@@ -8,66 +8,19 @@ let prevBtn;
 let nextBtn;
 let lastBtnsArray;
 
-// function createPaginationTemplate(totalPages) {
-//   renderPagination(prevBtnTemplate);
-//   for (let i = 0; i < totalPages; i++) {
-//     let pageNumber = i + 1;
-//     const template = `<li>
-//     <a
-//       href="#"
-//       id="${pageNumber}"
-//       class="numeric-page flex h-8 items-center justify-center border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-//     >${pageNumber}</a>
-//   </li>`;
-//     renderPagination(template);
-//   }
-//   renderPagination(nextBtnTemplate);
-
-//   pageBtns = paginationWrapper.querySelectorAll("ul li a.numeric-page");
-//   prevBtn = paginationWrapper.querySelector("#previousBtn");
-//   nextBtn = paginationWrapper.querySelector("#nextBtn");
-//   lastBtnsArray = [prevBtn, nextBtn];
-
-//   btnsUpdateFunction();
-// }
-
 function createPaginationTemplate(totalPages) {
   renderPagination(prevBtnTemplate);
 
-  const maxVisiblePages = 8; // Maximum number of visible page numbers
-  const visiblePagesBeforeEllipsis = 5; // Number of visible pages before ellipsis
-  const visiblePagesAfterEllipsis = 2; // Number of visible pages after ellipsis
-
-  let currentPage = 1;
-
-  for (let i = 0; i < totalPages; i++) {
+  for (let i = 0; i < 10; i++) {
     let pageNumber = i + 1;
-
-    if (
-      pageNumber <= visiblePagesBeforeEllipsis || // Always show first few pages
-      pageNumber >= totalPages - visiblePagesAfterEllipsis || // Always show last few pages
-      (pageNumber >= currentPage - Math.floor(maxVisiblePages / 2) &&
-        pageNumber <= currentPage + Math.floor(maxVisiblePages / 2)) // Show pages around the current page
-    ) {
-      const template = `<li>
-        <a
-          href="#"
-          id="${pageNumber}"
-          class="numeric-page flex h-8 items-center justify-center border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-        >${pageNumber}</a>
-      </li>`;
-      renderPagination(template);
-    } else if (
-      pageNumber ===
-      currentPage + Math.floor(maxVisiblePages / 2) + 1
-    ) {
-      renderPagination(`<li>
-      <a
-        href="#"
-        class="ellipsis flex h-8 items-center justify-center border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-      >...</a>
-    </li>`);
-    }
+    const template = `<li>
+    <a
+      href="#"
+      id="${pageNumber}"
+      class="numeric-page flex h-8 items-center justify-center border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+    >${pageNumber}</a>
+  </li>`;
+    renderPagination(template);
   }
 
   renderPagination(nextBtnTemplate);
@@ -78,6 +31,28 @@ function createPaginationTemplate(totalPages) {
   lastBtnsArray = [prevBtn, nextBtn];
 
   btnsUpdateFunction();
+}
+
+// Pagination update for next pages
+function incrementPagination(pagesArray) {
+  pagesArray.shift();
+  pagesArray.push(pagesArray[pagesArray.length - 1] + 1);
+
+  pageBtns.forEach((btn, index) => {
+    btn.innerHTML = pagesArray[index];
+    btn.id = `${pagesArray[index]}`;
+  });
+}
+
+// Pagination update for previous pages
+function decrementPagination(pagesArray) {
+  pagesArray.pop();
+  pagesArray.unshift(pagesArray[0] - 1);
+
+  pageBtns.forEach((btn, index) => {
+    btn.innerHTML = pagesArray[index];
+    btn.id = `${pagesArray[index]}`;
+  });
 }
 
 //Update newly created buttons
@@ -134,14 +109,24 @@ async function switchPage(event) {
         selectedId = Number(event.target.closest("a").id);
     }
 
+    await getCharacters(
+      `https://rickandmortyapi.com/api/character?page=${selectedId}`,
+    );
+
+    // Update pagination
+    let pagesArray = Array.from(pageBtns).map((btn) => Number(btn.id));
+
+    if (selectedId === pagesArray[pagesArray.length - 1]) {
+      incrementPagination(pagesArray);
+    }
+    if (selectedId === pagesArray[0] && pagesArray[0] !== 1) {
+      decrementPagination(pagesArray);
+    }
+
     selectedElement = Array.from(pageBtns).find(
       (pageBtn) => Number(pageBtn.id) === selectedId,
     );
     selectedElement.classList.add("selected");
-
-    await getCharacters(
-      `https://rickandmortyapi.com/api/character?page=${selectedId}`,
-    );
   }
 }
 
