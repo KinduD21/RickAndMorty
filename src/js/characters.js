@@ -3,6 +3,7 @@ import { createPaginationTemplate } from "./pagination";
 const cardWrapper = document.querySelector("#cardWrapper");
 let pagesPassed = false;
 let episodesArray = [];
+let totalPages;
 
 await getCharacters("https://rickandmortyapi.com/api/character?page=1");
 
@@ -11,7 +12,8 @@ async function getCharacters(url) {
   let data = await charactersRequest.json();
   if (pagesPassed === false && !episodesArray.length) {
     pagesPassed = true;
-    createPaginationTemplate(data.info.pages);
+    totalPages = data.info.pages;
+    createPaginationTemplate();
     episodesArray = await getAllEpisodes();
   }
   await fillCards(shuffleArray(data.results));
@@ -105,4 +107,4 @@ function renderCards(cardTemplate) {
   cardWrapper.insertAdjacentHTML("beforeend", cardTemplate);
 }
 
-export { cardWrapper, getCharacters };
+export { cardWrapper, getCharacters, totalPages };

@@ -1,4 +1,4 @@
-import { getCharacters, cardWrapper } from "./characters";
+import { getCharacters, cardWrapper, totalPages } from "./characters";
 import { prevBtnTemplate, nextBtnTemplate } from "./buttonTemplates";
 
 const paginationWrapper = document.querySelector("#paginationWrapper");
@@ -8,7 +8,7 @@ let prevBtn;
 let nextBtn;
 let lastBtnsArray;
 
-function createPaginationTemplate(totalPages) {
+function createPaginationTemplate() {
   renderPagination(prevBtnTemplate);
 
   for (let i = 0; i < 10; i++) {
@@ -116,7 +116,10 @@ async function switchPage(event) {
     // Update pagination
     let pagesArray = Array.from(pageBtns).map((btn) => Number(btn.id));
 
-    if (selectedId === pagesArray[pagesArray.length - 1]) {
+    if (
+      selectedId === pagesArray[pagesArray.length - 1] &&
+      pagesArray[pagesArray.length - 1] !== totalPages
+    ) {
       incrementPagination(pagesArray);
     }
     if (selectedId === pagesArray[0] && pagesArray[0] !== 1) {
